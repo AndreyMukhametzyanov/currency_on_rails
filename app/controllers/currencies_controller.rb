@@ -13,7 +13,7 @@ class CurrenciesController < ApplicationController
     end
   end
 
-  def load_currencies
+  def load
     Parser.new.xml_into_hash.each do |el|
       Currency.create(el)
     end
@@ -22,15 +22,9 @@ class CurrenciesController < ApplicationController
 
   def update_rates
     Parser.new.xml_into_hash.each do |data_set|
-      currency = Currency.find_by(Name: data_set[:Name])
-      currency.update(currency[:Name], value: data_set[:value])
+      currency = Currency.find_by(NumCode: data_set[:NumCode]) # дает всю строчку данных
+      currency.update(data_set)
     end
     render json: { status: :ok }
-  end
-
-  private
-
-  def currency_params
-    params.require(:currency).permit(:NumCode, :CharCode, :Nominal, :Name, :Value)
   end
 end
