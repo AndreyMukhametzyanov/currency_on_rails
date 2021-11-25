@@ -21,9 +21,11 @@ class CurrenciesController < ApplicationController
   end
 
   def update_rates
-
+    Parser.new.xml_into_hash.each do |data_set|
+      currency = Currency.find_by(Name: data_set[:Name])
+      currency.update(currency[:Name], value: data_set[:value])
+    end
     render json: { status: :ok }
-
   end
 
   private
