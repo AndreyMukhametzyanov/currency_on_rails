@@ -16,11 +16,11 @@ ActiveRecord::Schema.define(version: 2021_11_24_072741) do
   enable_extension "plpgsql"
 
   create_table "currencies", force: :cascade do |t|
-    t.string "NumCode"
-    t.string "CharCode"
-    t.integer "Nominal"
-    t.string "Name"
-    t.float "Value"
+    t.string "num_code"
+    t.string "char_code"
+    t.integer "nominal"
+    t.string "name"
+    t.float "value"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end

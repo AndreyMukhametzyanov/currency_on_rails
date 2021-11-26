@@ -1,4 +1,4 @@
 class Currency < ApplicationRecord
-  validates :NumCode, :CharCode, :Nominal, :Name, :Value, presence: true
-  validates :NumCode, :CharCode, uniqueness: true
+  validates :num_code, :char_code, :nominal, :name, :value, presence: true
+  validates :num_code, :char_code, uniqueness: true
 end

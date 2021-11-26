@@ -13,11 +13,11 @@ class Parser
     doc = REXML::Document.new(response.body)
     doc.root.map do |element|
       {
-        NumCode: element.elements['NumCode'].text,
-        CharCode: element.elements['CharCode'].text,
-        Nominal: element.elements['Nominal'].text,
-        Name: element.elements['Name'].text,
-        Value: element.elements['Value'].text
+        num_code: element.elements['NumCode'].text,
+        char_code: element.elements['CharCode'].text,
+        nominal: element.elements['Nominal'].text,
+        name: element.elements['Name'].text,
+        value: element.elements['Value'].text
       }
     end
   end

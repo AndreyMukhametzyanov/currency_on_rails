@@ -22,7 +22,7 @@ class CurrenciesController < ApplicationController
 
   def update_rates
     Parser.new.xml_into_hash.each do |data_set|
-      currency = Currency.find_by(NumCode: data_set[:NumCode]) # дает всю строчку данных
+      currency = Currency.find_by(num_code: data_set[:num_code])
       currency.update(data_set)
     end
     render json: { status: :ok }
