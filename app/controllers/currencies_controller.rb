@@ -5,7 +5,7 @@ class CurrenciesController < ApplicationController
   end
 
   def show
-    currency = Currency.find_by(CharCode: params[:CharCode])
+    currency = Currency.find_by(char_code: params[:char_code])
     if currency
       render json: { status: :ok, data: currency }
     else
