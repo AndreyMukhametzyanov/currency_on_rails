@@ -1,8 +1,8 @@
 FactoryBot.define do
   factory :currency do
-    num_code { "777" }
-    char_code { "MYC" }
-    nominal {100}
+    sequence(:num_code) { |i| "777" * i }
+    sequence(:char_code) { |j| "MYC" * j }
+    nominal { 100 }
     name { "My Currency" }
     value { 12.12 }
   end
