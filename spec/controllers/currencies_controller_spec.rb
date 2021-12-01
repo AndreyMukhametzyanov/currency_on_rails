@@ -46,6 +46,7 @@ RSpec.describe CurrenciesController, type: :request do
   end
 
   describe '#load' do
+    context 'when load is complete' do
       before do
         expect(Parser).to receive(:xml_into_hash).and_return(fake_data)
         post load_currencies_path
@@ -63,7 +64,21 @@ RSpec.describe CurrenciesController, type: :request do
         expect(Currency.find_by(name: fake_data.first[:name]).name).to eq(fake_data.first[:name])
         expect(Currency.find_by(value: fake_data.first[:value]).value).to eq(fake_data.first[:value])
       end
+    end
+    context 'when load with errors' do
+      before do
+        expect(Parser).to receive(:xml_into_hash).and_return(fake_data_error)
+        post load_currencies_path
+      end
+      let(:fake_data_error) { [{ num_code: '   ' }] }
+      it 'should return empty massive' do
+        expect(response).to have_http_status(200)
+        expect(subject[:status]).to eq('ok')
+        expect(Currency.all).to eq([])
+      end
+    end
   end
+
   describe '#update_rates' do
 
   end
