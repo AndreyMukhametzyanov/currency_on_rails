@@ -6,4 +6,5 @@ Rails.application.routes.draw do
       post :update_rates
     end
   end
+  #место для коментариев
 end

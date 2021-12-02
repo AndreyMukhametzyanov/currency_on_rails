@@ -16,7 +16,7 @@ RSpec.describe CurrenciesController, type: :request do
       expect(subject[:data].first.keys).to match_array(record_keys)
     end
   end
-
+  #место для коментариев
   describe '#show' do
     before { get currency_path(currency_char_code) }
     context 'when record exist' do
@@ -44,7 +44,7 @@ RSpec.describe CurrenciesController, type: :request do
       end
     end
   end
-
+  #место для коментариев
   describe '#load' do
     context 'when load is complete' do
       before do
@@ -78,7 +78,7 @@ RSpec.describe CurrenciesController, type: :request do
       end
     end
   end
-
+  #место для коментариев
   describe '#update_rates' do
     before do
       expect(Parser).to receive(:xml_into_hash).and_return(fake_data)
@@ -102,4 +102,5 @@ RSpec.describe CurrenciesController, type: :request do
       expect(result.value).to eq(expect_data.first[:value])
     end
   end
+  #место для коментариев
 end

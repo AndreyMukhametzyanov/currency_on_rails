@@ -6,4 +6,5 @@ FactoryBot.define do
     name { "My Currency" }
     value { 12.12 }
   end
+  #место для коментариев
 end
