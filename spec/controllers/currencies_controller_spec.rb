@@ -89,12 +89,17 @@ RSpec.describe CurrenciesController, type: :request do
       [{ num_code: '036', char_code: 'AUD', nominal: 1, name: 'Австралийский доллар', value: 53.0 }] }
     let(:expect_data) {
       [{ num_code: '036', char_code: 'AUD', nominal: 1, name: 'Австралийский доллар', value: 1010.0 }] }
-    let!(:cu) { Currency.all }
+    let(:currency) { Currency.all.first }
+    let(:result) { Currency.update(currency.id, value: 1010.0) }
 
     it 'should return updated currency' do
       expect(response).to have_http_status(200)
       expect(subject[:status]).to eq('ok')
-      expect(cu.update(value: 1010.0)).to eq(expect_data)
+      expect(result.num_code).to eq(expect_data.first[:num_code])
+      expect(result.char_code).to eq(expect_data.first[:char_code])
+      expect(result.nominal).to eq(expect_data.first[:nominal])
+      expect(result.name).to eq(expect_data.first[:name])
+      expect(result.value).to eq(expect_data.first[:value])
     end
   end
 end
