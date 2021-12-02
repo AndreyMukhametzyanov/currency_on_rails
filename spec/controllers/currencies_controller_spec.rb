@@ -80,6 +80,21 @@ RSpec.describe CurrenciesController, type: :request do
   end
 
   describe '#update_rates' do
+    before do
+      expect(Parser).to receive(:xml_into_hash).and_return(fake_data)
+      post load_currencies_path
+    end
 
+    let(:fake_data) {
+      [{ num_code: '036', char_code: 'AUD', nominal: 1, name: 'Австралийский доллар', value: 53.0 }] }
+    let(:expect_data) {
+      [{ num_code: '036', char_code: 'AUD', nominal: 1, name: 'Австралийский доллар', value: 1010.0 }] }
+    let!(:cu) { Currency.all }
+
+    it 'should return updated currency' do
+      expect(response).to have_http_status(200)
+      expect(subject[:status]).to eq('ok')
+      expect(cu.update(value: 1010.0)).to eq(expect_data)
+    end
   end
 end
