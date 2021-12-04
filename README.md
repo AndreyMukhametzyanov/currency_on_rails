@@ -1,24 +1,60 @@
-# README
+# Currency API
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Необходимо реализовать сервис со следующим функционалом на Ruby on Rails.
 
-Things you may want to cover:
+В базе данных (желательно применить Postgresql) должна быть таблица currency c колонками:
+- id — первичный ключ
+- name — название валюты
+- rate — курс валюты к рублю
 
-* Ruby version
+Должна быть Rake таска для обновления данных в таблице currency.
 
-* System dependencies
+Данные по курсам валют можно взять отсюда: http://www.cbr.ru/scripts/XML_daily.asp
 
-* Configuration
+Реализовать 2 REST API метода:
+- GET /currencies — должен возвращать список курсов валют с возможностью пагинации
+- GET /currencies/:char_code — должен возвращать курс валюты для переданного char_code
 
-* Database creation
+Ответ должен быть в формате JSON.
+Наличие тестов обязательно.
+API должно быть закрыто bearer авторизацией.
 
-* Database initialization
+Запуск:
 
-* How to run the test suite
+- Создать БД
+```shell
+rails db:create
+```
 
-* Services (job queues, cache servers, search engines, etc.)
+- Запустить миграции
+```shell
+rails db:migrate
+```
 
-* Deployment instructions
+- Запустить сервер
+```shell
+rails s
+```
 
-* ...
+- Для загрузки валют в бд необходимо отправить POST запрос
+```shell
+POST http://localhost:3000/currencies/load
+Content-Type: application/json
+```
+
+- Получить значение всех валют
+```shell
+GET http://localhost:3000/currencies
+```
+
+- Получение конкретной валюты на примере Доллара
+```shell
+GET http://localhost:3000/currencies/USD
+```
+
+- Обновить значение валют
+```shell
+ POST http://localhost:3000/currencies/update_rates
+ Content-Type: application/json
+```
+

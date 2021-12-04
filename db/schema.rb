@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_11_24_072741) do
+ActiveRecord::Schema.define(version: 2021_12_04_115413) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -23,6 +23,8 @@ ActiveRecord::Schema.define(version: 2021_11_24_072741) do
     t.float "value"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["char_code"], name: "index_currencies_on_char_code", unique: true
+    t.index ["num_code"], name: "index_currencies_on_num_code", unique: true
   end
 
 end
