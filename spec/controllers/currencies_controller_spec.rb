@@ -16,7 +16,7 @@ RSpec.describe CurrenciesController, type: :request do
       expect(subject[:data].first.keys).to match_array(record_keys)
     end
   end
-  #место для коментариев
+
   describe '#show' do
     before { get currency_path(currency_char_code) }
     context 'when record exist' do
@@ -44,20 +44,22 @@ RSpec.describe CurrenciesController, type: :request do
       end
     end
   end
-  #место для коментариев
+
   describe '#load' do
     context 'when load is complete' do
+      let(:fake_data) do
+        [{ num_code: '036', char_code: 'AUD', nominal: 1, name: 'Австралийский доллар', value: 53.0 }]
+      end
+
       before do
         expect(Parser).to receive(:xml_into_hash).and_return(fake_data)
         post load_currencies_path
       end
 
-      let(:fake_data) {
-        [{ num_code: '036', char_code: 'AUD', nominal: 1, name: 'Австралийский доллар', value: 53.0 }] }
-
       it 'should load all currencies into db' do
         expect(response).to have_http_status(200)
         expect(subject[:status]).to eq('ok')
+
         expect(Currency.find_by(num_code: fake_data.first[:num_code]).num_code).to eq(fake_data.first[:num_code])
         expect(Currency.find_by(char_code: fake_data.first[:char_code]).char_code).to eq(fake_data.first[:char_code])
         expect(Currency.find_by(nominal: fake_data.first[:nominal]).nominal).to eq(fake_data.first[:nominal])
@@ -74,33 +76,29 @@ RSpec.describe CurrenciesController, type: :request do
       it 'should return empty massive' do
         expect(response).to have_http_status(200)
         expect(subject[:status]).to eq('ok')
-        expect(Currency.all).to eq([])
+        expect(Currency.all).to be_empty
       end
     end
   end
-  #место для коментариев
+
   describe '#update_rates' do
-    before do
-      expect(Parser).to receive(:xml_into_hash).and_return(fake_data)
-      post load_currencies_path
+    let(:value_before_update) { 100 }
+    let(:value_after_update) { 200 }
+
+    let!(:currency) { create :currency, value: value_before_update }
+    let(:fake_data) do
+      [{ num_code: currency.num_code, value: value_after_update }]
     end
 
-    let(:fake_data) {
-      [{ num_code: '036', char_code: 'AUD', nominal: 1, name: 'Австралийский доллар', value: 53.0 }] }
-    let(:expect_data) {
-      [{ num_code: '036', char_code: 'AUD', nominal: 1, name: 'Австралийский доллар', value: 1010.0 }] }
-    let(:currency) { Currency.all.first }
-    let(:result) { Currency.update(currency.id, value: 1010.0) }
+    before do
+      expect(Parser).to receive(:xml_into_hash).and_return(fake_data)
+      post update_rates_currencies_path
+    end
 
     it 'should return updated currency' do
       expect(response).to have_http_status(200)
       expect(subject[:status]).to eq('ok')
-      expect(result.num_code).to eq(expect_data.first[:num_code])
-      expect(result.char_code).to eq(expect_data.first[:char_code])
-      expect(result.nominal).to eq(expect_data.first[:nominal])
-      expect(result.name).to eq(expect_data.first[:name])
-      expect(result.value).to eq(expect_data.first[:value])
+      expect(currency.reload.value).to eq(value_after_update)
     end
   end
-  #место для коментариев
 end
